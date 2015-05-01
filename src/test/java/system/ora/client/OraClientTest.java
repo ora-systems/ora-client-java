@@ -3,6 +3,7 @@ package system.ora.client;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import java.util.ArrayList;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 
@@ -121,6 +122,42 @@ public class OraClientTest extends TestCase
       } catch (IOException ex) {
         assertNull(ex);
       }     
+    }
+
+    public void testOraCollectionInsert() 
+    {
+      OraClient cli = new OraClient();
+      ArrayList<Halo> halos = new ArrayList<Halo>();
+      halos.add(new Halo(1000401, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6));
+      halos.add(new Halo(1000401, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6));
+      halos.add(new Halo(1000401, 0.3, 0.2, 0.3, 0.4, 0.5, 0.6));
+      try {
+        int collectionId = cli.insertHaloList(halos);
+        assertTrue(collectionId > 0);
+        assertTrue(halos.get(1).getId() > 0);
+        assertEquals(halos.get(1).getSize(), 0.2d, 0.0001d);
+      } catch (IOException ex) {
+        assertNull(ex);
+      }
+    }
+
+    public void testOraCollectionRetrieve()
+    {
+      OraClient cli = new OraClient();
+      ArrayList<Halo> halos = new ArrayList<Halo>();
+      halos.add(new Halo(1000401, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6));
+      halos.add(new Halo(1000401, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6));
+      halos.add(new Halo(1000401, 0.3, 0.2, 0.3, 0.4, 0.5, 0.6));
+      try {
+        int collectionId = cli.insertHaloList(halos);
+        assertTrue(collectionId > 0);
+        ArrayList<Halo> haloset = cli.getHaloCollection(collectionId);
+        assertNotNull(haloset);
+        assertEquals(haloset.get(2).getSize(), 0.3d, 0.0001d);
+      } catch (IOException ex) {
+        assertNull(ex);
+      }
+
     }
 
 }

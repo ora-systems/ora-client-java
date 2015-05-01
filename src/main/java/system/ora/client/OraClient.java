@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.DataOutputStream;
+import java.util.List;
+import java.util.ArrayList;
 import org.json.*;
 
 class OraClient {
@@ -15,13 +17,8 @@ class OraClient {
 
   public OraClient() {}
 
-  private String jsonifyHalo(Halo h) {
+  private JSONObject jsonifyVertices(Halo h) {
     try {
-      JSONObject job = new JSONObject();
-      job.put("app", appId);
-      if (h.getId() > 0) {
-        job.put("id", h.getId());
-      }
       JSONObject jvrt = new JSONObject();
       jvrt.put("size", h.getSize());
       jvrt.put("color", h.getColor());
@@ -29,15 +26,42 @@ class OraClient {
       jvrt.put("speed", h.getSpeed());
       jvrt.put("brightness", h.getBrightness());
       jvrt.put("wobble", h.getWobble());
-      job.put("vertices", jvrt);
+      return jvrt;
+    } catch (JSONException ex) {
+      return null;
+    }
+  }
+
+  private String jsonifyHalo(Halo h) {
+    try {
+      JSONObject job = new JSONObject();
+      job.put("app", appId);
+      if (h.getId() > 0) {
+        job.put("id", h.getId());
+      }
+      job.put("vertices", jsonifyVertices(h));
       return job.toString();
     } catch (JSONException ex) {
       return null;
     }
   }
 
-  private Halo readHalo(HttpURLConnection conn) throws IOException {
+  private String jsonifyList(List<Halo> halos) {
+    try {
+      JSONObject job = new JSONObject();
+      job.put("app", appId);
+      JSONArray list = new JSONArray();
+      for (Halo h : halos) {
+        list.put(jsonifyVertices(h));
+      }
+      job.put("vertices", list);
+      return job.toString();
+    } catch (JSONException ex) {
+      return null;
+    }
+  }
 
+  private String readResponse(HttpURLConnection conn) throws IOException {
     // Read it.
     BufferedReader in = new BufferedReader(
       new InputStreamReader(conn.getInputStream()));
@@ -47,22 +71,54 @@ class OraClient {
       response.append(inputLine);
     }
     in.close();
+    return response.toString();
+  }
+
+  private HttpURLConnection sendData(URL url, String method, String data) throws IOException {
+
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+    conn.setRequestMethod(method);
+    conn.setRequestProperty("User-Agent", "OraClient 0.1");
+    conn.setRequestProperty("Content-Type", "application/json");
+    conn.setRequestProperty("Content-Length", Integer.toString(data.getBytes().length));
+    conn.setUseCaches(false);
+    conn.setDoInput(true);
+    conn.setDoOutput(true);
+
+    // Write body
+    DataOutputStream out = new DataOutputStream(
+      conn.getOutputStream());
+    out.writeBytes(data);
+    out.flush();
+    out.close();
+
+    return conn;
+  }
+
+  private Halo parseHalo(JSONObject job) throws JSONException {
+    JSONObject vert = job.getJSONObject("vertices");
+
+    Halo h = new Halo(appId,
+      vert.getDouble("size"),
+      vert.getDouble("color"),
+      vert.getDouble("complexity"),
+      vert.getDouble("speed"),
+      vert.getDouble("brightness"),
+      vert.getDouble("wobble")
+      );
+    h.setId(job.getInt("id"));
+    return h;
+  }
+
+  private Halo readHalo(HttpURLConnection conn) throws IOException {
+
+    String response = readResponse(conn);
 
     // Parse it.
     try {
-      JSONObject job = new JSONObject(response.toString());
-      JSONObject vert = job.getJSONObject("vertices");
-
-      Halo h = new Halo(appId,
-        vert.getDouble("size"),
-        vert.getDouble("color"),
-        vert.getDouble("complexity"),
-        vert.getDouble("speed"),
-        vert.getDouble("brightness"),
-        vert.getDouble("wobble")
-      );
-      h.setId(job.getInt("id"));
-      return h;
+      JSONObject job = new JSONObject(response);
+      return parseHalo(job);
     } catch (JSONException ex) {
       return null;
     }
@@ -93,24 +149,10 @@ class OraClient {
 
   public Halo insertHalo(Halo halo) throws IOException {
     URL url = new URL(baseURL);
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
     String json = jsonifyHalo(halo);
 
-    conn.setRequestMethod("POST");
-    conn.setRequestProperty("User-Agent", "OraClient 0.1");
-    conn.setRequestProperty("Content-Type", "application/json");
-    conn.setRequestProperty("Content-Length", Integer.toString(json.getBytes().length));
-    conn.setUseCaches(false);
-    conn.setDoInput(true);
-    conn.setDoOutput(true);
-
-    // Write body
-    DataOutputStream out = new DataOutputStream(
-      conn.getOutputStream());
-    out.writeBytes(json);
-    out.flush();
-    out.close();
+    HttpURLConnection conn = sendData(url, "POST", json);
 
     Halo h = readHalo(conn);
 
@@ -120,28 +162,70 @@ class OraClient {
 
   public Halo updateHalo(Halo halo) throws IOException {
     URL url = new URL(baseURL + "/" + halo.getId());
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
     String json = jsonifyHalo(halo);
 
-    conn.setRequestMethod("PUT");
-    conn.setRequestProperty("User-Agent", "OraClient 0.1");
-    conn.setRequestProperty("Content-Type", "application/json");
-    conn.setRequestProperty("Content-Length", Integer.toString(json.getBytes().length));
-    conn.setUseCaches(false);
-    conn.setDoInput(true);
-    conn.setDoOutput(true);
-
-    // Write body
-    DataOutputStream out = new DataOutputStream(
-      conn.getOutputStream());
-    out.writeBytes(json);
-    out.flush();
-    out.close();
+    HttpURLConnection conn = sendData(url, "PUT", json);
 
     Halo h = readHalo(conn);
 
     return h;
+  }
+
+  public int insertHaloList(List<Halo> halos) throws IOException {
+    URL url = new URL(baseURL + "/collection");
+
+    String json = jsonifyList(halos);
+
+    HttpURLConnection conn = sendData(url, "POST", json);
+
+    String response = readResponse(conn);
+
+    // Parse it.
+    try {
+      JSONObject job = new JSONObject(response);
+      int collectionId = job.getInt("id");
+      JSONArray jalos = job.getJSONArray("halos");
+
+      for (int i = 0; i < jalos.length(); i++ ) {
+        JSONObject jhob = jalos.getJSONObject(i);
+        Halo h = halos.get(i);
+        h.setId(jhob.getInt("id"));
+      }
+      return collectionId;
+    } catch (JSONException ex) {
+      return -1;
+    }
+
+  }
+
+  public ArrayList<Halo> getHaloCollection(int collectionId) throws IOException {
+    URL url = new URL(baseURL + "/collection/" + Integer.toString(collectionId));
+
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+    conn.setRequestMethod("GET");
+    conn.setRequestProperty("User-Agent", "OraClient 0.1");
+
+    // Should we handle anything separate here?
+    if (conn.getResponseCode() != 200) {
+      return null;
+    }
+
+    String response = readResponse(conn);
+
+    ArrayList<Halo> halos = new ArrayList<Halo>();
+
+    try {
+      JSONArray idList = new JSONArray(response);
+      for (int i = 0; i < idList.length(); i++ ) {
+        halos.add(getHalo(idList.getInt(i)));
+      }
+      return halos;
+    } catch (JSONException ex) {
+      return null;
+    }
+
   }
 
 }
