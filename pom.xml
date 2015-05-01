@@ -2,11 +2,32 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>system.ora.client</groupId>
-  <artifactId>OraClient</artifactId>
+  <artifactId>ora-client</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.2-SNAPSHOT</version>
   <name>OraClient</name>
-  <url>http://maven.apache.org</url>
+  <url>http://ora.systems</url>
+  <description>Java Client to the Ora data visualization platform.</description>
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:git:git://github.com/ora-systems/ora-client-java.git</connection>
+    <developerConnection>scm:git:git@github.com:ora-systems/ora-client-java.git</developerConnection>
+    <url>https://github.com/ora-systems/ora-client-java.git</url>
+  </scm>
+  <developers>
+    <developer>
+      <name>Blunt Jackson</name>
+      <email>bluejack@bluejack.com</email>
+      <organization>Ora Systems</organization>
+      <organizationUrl>http://ora.systems</organizationUrl>
+    </developer>
+  </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>  

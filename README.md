@@ -10,8 +10,6 @@ This is a simple synchronous client for accessing the ORA rest API.
 
 Take a look at the tests to see usage.
 
-## TODO:
+## In progress
 
-    [ ] Support collections
-    [ ] Provide jar via maven
-    
+Publication to the Maven central repository.
