@@ -1,4 +1,4 @@
-package system.ora.client;
+package systems.ora.client;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
