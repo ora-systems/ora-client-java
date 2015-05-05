@@ -3,7 +3,7 @@
   <groupId>systems.ora</groupId>
   <artifactId>ora-client</artifactId>
   <packaging>jar</packaging>
-  <version>0.7-SNAPSHOT</version>
+  <version>0.8-SNAPSHOT</version>
   <name>OraClient</name>
   <url>http://ora.systems</url>
   <description>Java Client to the Ora data visualization platform.</description>
@@ -18,7 +18,7 @@
     <connection>scm:git:git://github.com/ora-systems/ora-client-java.git</connection>
     <developerConnection>scm:git:git@github.com:ora-systems/ora-client-java.git</developerConnection>
     <url>https://github.com/ora-systems/ora-client-java.git</url>
-    <tag>ora-client-0.6</tag>
+    <tag>ora-client-0.7</tag>
   </scm>
   <distributionManagement>
     <snapshotRepository>
