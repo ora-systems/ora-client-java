@@ -10,6 +10,12 @@ This is a simple synchronous client for accessing the ORA rest API.
 
 Take a look at the tests to see usage.
 
-## In progress
+## To Include in your maven project:
 
-Publication to the Maven central repository.
+    <dependency>
+      <groupId>systems.ora</groupId>
+      <artifactId>ora-client</artifactId>
+      <version>0.6</version>
+    </dependency>  
+
+  

@@ -3,7 +3,7 @@
   <groupId>systems.ora</groupId>
   <artifactId>ora-client</artifactId>
   <packaging>jar</packaging>
-  <version>0.4-SNAPSHOT</version>
+  <version>0.6-SNAPSHOT</version>
   <name>OraClient</name>
   <url>http://ora.systems</url>
   <description>Java Client to the Ora data visualization platform.</description>
@@ -20,6 +20,31 @@
     <url>https://github.com/ora-systems/ora-client-java.git</url>
     <tag>HEAD</tag>
   </scm>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.3</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>  
+    </plugins>
+    </build>
   <developers>
     <developer>
       <name>Blunt Jackson</name>
