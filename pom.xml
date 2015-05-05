@@ -3,7 +3,7 @@
   <groupId>systems.ora</groupId>
   <artifactId>ora-client</artifactId>
   <packaging>jar</packaging>
-  <version>0.8-SNAPSHOT</version>
+  <version>0.9-SNAPSHOT</version>
   <name>OraClient</name>
   <url>http://ora.systems</url>
   <description>Java Client to the Ora data visualization platform.</description>
