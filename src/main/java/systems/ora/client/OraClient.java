@@ -128,6 +128,9 @@ class OraClient {
    * Fetches the halo with specified id from the server.
    * If the server is unavailable or otherwise reports an error, an exception will be thrown.
    * If there is no such halo on the server, this returns null.
+   * @param id    The halo id
+   * @return      The halo, if found. null if not. 
+   * @throws IOException  On server error
    */
   public Halo getHalo(int id) throws IOException {
     String route = baseURL + "/" + Integer.toString(id);
@@ -154,6 +157,9 @@ class OraClient {
 
   /**
    * Sends a halo to the server.
+   * @param halo    A halo object to store.
+   * @return        Updated halo.
+   * @throws IOException On server failure.
    */
   public Halo insertHalo(Halo halo) throws IOException {
     URL url = new URL(baseURL);
@@ -169,7 +175,10 @@ class OraClient {
   }
 
   /**
-   * Updates a halo on the server.
+   * Persists the new state of a halo to the server.
+   * @param halo    A halo object to ubdate on the server.
+   * @return        Updated halo.
+   * @throws IOException  On server failure.
    */
   public Halo updateHalo(Halo halo) throws IOException {
     URL url = new URL(baseURL + "/" + halo.getId());
@@ -185,7 +194,9 @@ class OraClient {
   
   /**
    * Sends a list of halos to the server.
-   * @return the id for the collection of halos.
+   * @param  halos    A list of halos.
+   * @return          the id for the collection of halos.
+   * @throws IOException On server failure.
    */
   public int insertHaloList(List<Halo> halos) throws IOException {
     URL url = new URL(baseURL + "/collection");
@@ -216,6 +227,9 @@ class OraClient {
   
   /**
    * get a list of halos from the server.
+   * @param collectionId    The id of the collection.
+   * @return                List of halos, if found.
+   * @throws IOException    On server failure.   
    */
   public ArrayList<Halo> getHaloCollection(int collectionId) throws IOException {
     URL url = new URL(baseURL + "/collection/" + Integer.toString(collectionId));
