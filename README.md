@@ -15,7 +15,7 @@ Take a look at the tests to see usage.
     <dependency>
       <groupId>systems.ora</groupId>
       <artifactId>ora-client</artifactId>
-      <version>0.6</version>
+      <version>0.7/version>
     </dependency>  
 
   
