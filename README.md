@@ -15,6 +15,7 @@ Take a look at the tests to see usage.
 Following is a basic hello world app:
 
   import systems.ora.client.*;
+  import java.io.IOException;
 
   public class App 
   {
@@ -37,7 +38,7 @@ Following is a basic hello world app:
     <dependency>
       <groupId>systems.ora</groupId>
       <artifactId>ora-client</artifactId>
-      <version>0.7</version>
+      <version>0.8</version>
     </dependency>  
 
   
