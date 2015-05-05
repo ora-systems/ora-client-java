@@ -12,10 +12,16 @@ class Halo {
   private double color = 0.0;
   private double speed = 0.0;
 
+  /**
+   * Create an empty halo object.
+   */
   public Halo(int iAppId) {
     appId = iAppId;
   }
 
+  /**
+   * Create a halo object with all settings pre-set.
+   */
   public Halo(int iAppId, 
       double iSize, double iColor, double iComplexity, double iSpeed, double iBrightness, double iWobble) 
       throws InvalidParameterException 
@@ -37,6 +43,9 @@ class Halo {
     wobble     = iWobble;
   }
 
+  /**
+   * Provides a displayable string of halo information.
+   */
   public String toString() {
     return "haloId: " + Integer.toString(id) +
         "\nappId: " + Integer.toString(appId) +

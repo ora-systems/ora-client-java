@@ -3,7 +3,7 @@
   <groupId>systems.ora</groupId>
   <artifactId>ora-client</artifactId>
   <packaging>jar</packaging>
-  <version>0.6-SNAPSHOT</version>
+  <version>0.6</version>
   <name>OraClient</name>
   <url>http://ora.systems</url>
   <description>Java Client to the Ora data visualization platform.</description>
@@ -18,7 +18,7 @@
     <connection>scm:git:git://github.com/ora-systems/ora-client-java.git</connection>
     <developerConnection>scm:git:git@github.com:ora-systems/ora-client-java.git</developerConnection>
     <url>https://github.com/ora-systems/ora-client-java.git</url>
-    <tag>HEAD</tag>
+    <tag>ora-client-0.6</tag>
   </scm>
   <distributionManagement>
     <snapshotRepository>
@@ -32,6 +32,46 @@
   </distributionManagement>  
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.2.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9.1</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>      
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
