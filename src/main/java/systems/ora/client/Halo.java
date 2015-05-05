@@ -2,7 +2,7 @@ package systems.ora.client;
 
 import java.security.InvalidParameterException;
 
-class Halo {
+public class Halo {
   private int appId;
   private int id = 0;
   private double size = 0.0;
