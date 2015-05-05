@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.ArrayList;
 import org.json.*;
 
-class OraClient {
+public class OraClient {
 
   int    appId = 1000401;
   String baseURL = "http://sandbox.ora.me:6196/halo";
