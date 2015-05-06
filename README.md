@@ -23,10 +23,10 @@ Following is a basic hello world app:
       {
         OraClient cli = new OraClient();
         try {
-  		    Halo h = cli.insertHalo(new Halo(1000401, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3));
+          Halo h = cli.insertHalo(new Halo(1000401, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3));
           System.out.println("Yo. All good.");
         } catch (IOException ex) {
-      	  System.out.println("No such luck.");
+          System.out.println("No such luck.");
         }     
       }
     }
