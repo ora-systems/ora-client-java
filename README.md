@@ -31,6 +31,7 @@ Following is a basic hello world app:
       }
     }
 
+Note that 1000401 is the sandbox app. In a production instance this would be your application id.
 
 
 ## To Include in your maven project:
