@@ -14,22 +14,22 @@ Take a look at the tests to see usage.
 
 Following is a basic hello world app:
 
-  import systems.ora.client.*;
-  import java.io.IOException;
+    import systems.ora.client.*;
+    import java.io.IOException;
 
-  public class App 
-  {
-    public static void main( String[] args )
+    public class App 
     {
-      OraClient cli = new OraClient();
-      try {
-  		Halo h = cli.insertHalo(new Halo(1000401, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3));
-        System.out.println("Yo. All good.");
-      } catch (IOException ex) {
-      	System.out.println("No such luck.");
-      }     
+      public static void main( String[] args )
+      {
+        OraClient cli = new OraClient();
+        try {
+  		    Halo h = cli.insertHalo(new Halo(1000401, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3));
+          System.out.println("Yo. All good.");
+        } catch (IOException ex) {
+      	  System.out.println("No such luck.");
+        }     
+      }
     }
-  }
 
 
 
